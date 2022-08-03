@@ -1,7 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from pymongo import MongoClient
 import urllib
+from datetime import datetime
+
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
@@ -77,7 +78,7 @@ for i in range(0, 20):
     aladin_list.append({"bookstore": "알라딘", "rank": i+1, "title": title[i].text, "author": auAndPu[i].text.split('|')[0].strip(), "publisher":auAndPu[i].text.split('|')[1].strip(), "image": image[i].get_attribute('src')})
 
 driver.quit()
-
+#
 @app.route('/')
 def main():
     return render_template('index.html')
@@ -87,6 +88,11 @@ def bestseller():
 
     myname = 'sparta'
     return render_template("bestseller.html", name=myname, kyobo_list=kyobo_list, yp_list=yp_list, yes_list=yes_list, aladin_list=aladin_list)
+
+
+@app.route('/review')
+def review():
+    return render_template('review.html')
 
 
 @app.route("/getFavorite", methods=["POST"])
@@ -107,6 +113,27 @@ def get_favorite():
     db.test.insert_one(doc)
 
     return jsonify({'msg': '등록 완료!'})
+
+@app.route("/review/post", methods=["POST"])
+def read_post():
+    num_receive = request.form['num_give']
+    star_receive = request.form['star_give']
+    review_receive = request.form['review_give']
+    date = datetime.today().strftime('%Y-%m-%d')
+    db.favorites.update_one({'num': int(num_receive)}, {'$set': {'done': 1,'star':star_receive, 'review':review_receive, 'date':date, 'read':0}})
+
+    return jsonify({'msg': '등록 완료!'})
+#
+@app.route("/review/cancel", methods=["POST"])
+def cancel_read():
+    num_receive = request.form['num_give']
+    db.favorites.update_one({'num': int(num_receive)}, {'$set': {'read': 1}})
+    return jsonify({'msg': '삭제 완료!'})
+
+@app.route("/review/list", methods=["GET"])
+def review_get():
+    read_list = list(db.favorites.find({'done':1}, {'_id': False}))
+    return jsonify({'review': read_list})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
