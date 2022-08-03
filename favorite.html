@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>모두의 베스트셀러</title>
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="/static/favorite.css">
+
+    <script>
+        $(document).ready(function () {
+            show_favorite_book_list();
+        });
+
+        function open_modal(title) {
+            bookTitle = title
+            $(".modal").show();
+        }
+
+        function close_modal() {
+            $(".modal").hide();
+        }
+
+        function done_book(title) {
+            let star = $('#star').val();
+            let review = $('#review').val();
+            let star_image = '⭐'.repeat(star);
+
+            $.ajax({
+                type: "POST",
+                url: "/favorite/post",
+                data: {star_give: star_image, review_give: review, userid: "{{ name.username }}", title_give: title},
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.reload()
+                }
+            });
+        }
+
+        function show_favorite_book_list() {
+            $.ajax({
+                type: "GET",
+                url: "/favorite/list",
+                data: {},
+                success: function (response) {
+                    let rows = response['favoritebooks']
+                    for (let i = 0; i < rows.length; i++) {
+                        if (rows[i]['username'] == '{{ name.username }}') {
+                            let image = rows[i]['image']
+                            let title = rows[i]['title']
+                            let author = rows[i]['author']
+                            let date = rows[i]['date']
+                            let username = rows[i]['username']
+                            let done = rows[i]['done']
+                            let saved = rows[i]['saved']
+
+                            let temp_html = ``
+                            if (done == 0 && saved == 0) {
+                                temp_html = `<article class="media">
+                                            <figure class="media-left">
+                                                <p class="image is-64x64">
+                                                    <img src="${image}">
+                                                </p>
+                                            </figure>
+                                            <div class="media-content">
+                                                <div class="content">
+                                                    <p>
+                                                        <strong class="book-title">${title}</strong> <medium class="author">${author}</medium>
+                                                        <br>
+                                                        <button value = "${title}" onclick="open_modal(this.value)">리뷰작성!</button> <button value = "${title}" onclick="unlike(this.value)">즐겨찾기 취소!</button>
+
+                                                    </p>
+                                                </div>
+                                                <nav class="level is-mobile">
+                                                    <div class="level-left">
+                                                        <a class="level-item">
+                                                            <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                                                        </a>
+                                                        <a class="level-item">
+                                                            <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                                                        </a>
+                                                        <a class="level-item">
+                                                            <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </nav>
+                                            </div>
+                                            <div class="media-right">
+                                                <small>${date}</small>
+                                            </div>
+                                        </article>`
+                            }
+                            $('#favorite-list').append(temp_html)
+                        }
+
+                    }
+
+                }
+            });
+        }
+
+        function unlike(title) {
+
+            $.ajax({
+                type: "POST",
+                url: "/favorite/unlike",
+                data: {
+                    userid: '{{ name.username }}',
+                    title_unlike: title
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                }
+            })
+            window.location.reload();
+            //saved 값이 1로 바뀜 ! -> 조회시 목록에서 출력 안됨
+        }
+
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
+    </script>
+</head>
+<body>
+
+{# 메뉴바 #}
+<nav class="menu">
+    <ul id="gnb">
+        <!--<a href="#" class="log_in">로그인을 해주세요</a>-->
+        <p class="greeting">{{ name.username }}님 안녕하세요!</p>
+        <button onclick="logout()" class="logout">로그아웃</button>
+        <li><a href="/bestseller" class="in-white">베스트셀러</a></li>
+        <li><a href="/favorite" class="in-white">즐겨찾기</a></li>
+        <li><a href="/review" class="in-white">리뷰</a></li>
+    </ul>
+</nav>
+
+{# 상단바 #}
+
+<section class="hero is-white">
+    <div class="bg">
+        <div class="hero-body has-text-centered" style="padding-bottom:1rem; margin:auto;">
+            <p class="title" style="color:white">모두의 베스트셀러</p>
+        </div>
+    </div>
+</section>
+
+{# 즐겨찾기 #}
+
+<article class="media" id="favorite-list">
+
+</article>
+{# 모달창 #}
+<div class="modal hidden">
+    <div class="modal_overlay"></div>
+    <div class="modal_content">
+        <button onclick="close_modal()" type="button" class="btn-close" aria-label="Close"></button>
+        <h1>REVIEW</h1>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="star">별점</label>
+            <select class="form-select" id="star">
+                <option selected>Choose...</option>
+                <option value="1">⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+            </select>
+        </div>
+        <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="review"
+                          style="height: 100px"></textarea>
+            <label for="review">Comments</label>
+        </div>
+        <button onclick="done_book(bookTitle)" type="button" class="btn btn-dark">등록하기</button>
+    </div>
+</div>
+</body>
+</html>

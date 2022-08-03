@@ -18,47 +18,6 @@
     <link rel="stylesheet" href="/static/review.css">
 
     <script>
-         function open_modal(num) {
-            $(".modal").show();
-            newnum = num;
-        }
-
-        function close_modal() {
-            $(".modal").hide();
-            $(".modals").hide();
-        }
-
-        function open_modals(num) {
-            $(".modals").show();
-            newnum = num;
-        }
-
-        function cancel_read() {
-            $.ajax({
-                type: "POST",
-                url: "/review/cancel",
-                data: {num_give: newnum},
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.reload()
-                }
-            });
-        }
-
-        function done_book() {
-            let star = $('#star').val();
-            let review = $('#review').val();
-            let star_image = '⭐'.repeat(star);
-            $.ajax({
-                type: "POST",
-                url: "/review/post",
-                data: {num_give: newnum, star_give: star_image, review_give: review},
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.reload()
-                }
-            });
-        }
 
         $(document).ready(function () {
             show_books();
@@ -72,44 +31,78 @@
                 success: function (response) {
                     let rows = response['review']
                     for (let i = 0; i < rows.length; i++) {
-                        let title = rows[i]['title']
-                        let author = rows[i]['author']
-                        let star = rows[i]['star']
-                        let review = rows[i]['review']
-                        let done = rows[i]['done']
-                        let date = rows[i]['date']
-                        let num = rows[i]['num']
-                        let read = rows[i]['read']
+                        if (rows[i]['username'] == '{{ name.username }}') {
+                            let title = rows[i]['title']
+                            let author = rows[i]['author']
+                            let star = rows[i]['star']
+                            let review = rows[i]['review']
+                            let done = rows[i]['done']
+                            let date = rows[i]['date']
+                            let read = rows[i]['read']
+                            let image = rows[i]['image']
 
-                        let temp_html = ``
-                        if (done == 1 && read == 0) {
-                            temp_html = `
-             <h5>${date}</h5>
-             <button onclick="open_modals(${num})" type="button" class="btn btn-dark">삭제</button>
-            <div class="card mb-1" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="https://image.aladin.co.kr/product/29820/33/cover200/8932474753_2.jpg"
-                         class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">${title}</h5>
-                        <p class="card-text">${author}</p>
-<!--                        <p class="card-text"><small class="text-muted">을유문화사</small></p>-->
+                            let temp_html = ``
+                            if (done == 1 && read == 0) {
+                                temp_html = `
+                 <h5>${date}</h5>
+                 <button value = "${title}" onclick="open_modals(this.value)" type="button" class="btn btn-dark">삭제</button>
+                <div class="card mb-1" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="${image}"
+                             class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">${title}</h5>
+                            <p class="card-text">${author}</p>
+    <!--                        <p class="card-text"><small class="text-muted">을유문화사</small></p>-->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <p>${star}</p>
-        <p>${review}</p>`
+            <p>${star}</p>
+            <p>${review}</p>`
+                            }
+                            $('#read-list').append(temp_html)
                         }
-                        $('#read-list').append(temp_html)
+
                     }
                     alert(response["불러오기 완료"])
                 }
             });
         }
+
+        function close_modals() {
+            $(".modals").hide();
+        }
+
+        function open_modals(title) {
+            bookTitle = title;
+            $(".modals").show();
+        }
+
+        function cancel_read(title) {
+            $.ajax({
+                type: "POST",
+                url: "/review/cancel",
+                data: {
+                    userid: "{{ name.username }}",
+                    title_give: title
+                },
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.reload()
+                }
+            });
+        }
+
+      function logout(){
+        $.removeCookie('mytoken');
+        alert('로그아웃!')
+        window.location.href='/login'
+      }
+
     </script>
 </head>
 <body>
@@ -118,8 +111,8 @@
 <nav class="menu">
     <ul id="gnb">
         <!--<a href="#" class="log_in">로그인을 해주세요</a>-->
-        <!--<p>{{ user_info }}님 안녕하세요!</p>-->
-
+        <p class="greeting">{{ name.username }}님 안녕하세요!</p>
+        <button onclick="logout()" class="logout">로그아웃</button>
         <li><a href="/bestseller" class="in-white">베스트셀러</a></li>
         <li><a href="/favorite" class="in-white">즐겨찾기</a></li>
         <li><a href="/review" class="in-white">리뷰</a></li>
@@ -138,41 +131,18 @@
 
 {# 리뷰 #}
 <section id="read">
-    <h1>읽은 책</h1>
     <section id="read-list">
     </section>
 </section>
-<div class="modal hidden">
-    <div class="modal_overlay"></div>
-    <div class="modal_content">
-        <button onclick="close_modal()" type="button" class="btn-close" aria-label="Close"></button>
-        <h1>REVIEW</h1>
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="star">별점</label>
-            <select class="form-select" id="star">
-                <option selected>Choose...</option>
-                <option value="1">⭐</option>
-                <option value="2">⭐⭐</option>
-                <option value="3">⭐⭐⭐</option>
-                <option value="4">⭐⭐⭐⭐</option>
-                <option value="5">⭐⭐⭐⭐⭐</option>
-            </select>
-        </div>
-        <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="review"
-                          style="height: 100px"></textarea>
-            <label for="review">Comments</label>
-        </div>
-        <button onclick="done_book()" type="button" class="btn btn-dark">등록하기</button>
-    </div>
-</div>
+
+{# 리뷰 삭제 모달 #}
 <div class="modals hidden">
     <div class="modals_overlay"></div>
     <div class="modals_content">
         <h4>정말 삭제하시겠습니까?</h4>
         <div class="btn_group">
-            <button onclick="cancel_read()" type="button" class="btn btn-dark">삭제하기</button>
-            <button onclick="close_modal()" type="button" class="btn btn-dark">취소하기</button>
+            <button onclick="cancel_read(bookTitle)" type="button" class="btn btn-dark">삭제하기</button>
+            <button onclick="close_modals()" type="button" class="btn btn-dark">취소하기</button>
         </div>
     </div>
 </div>

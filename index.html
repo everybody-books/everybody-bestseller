@@ -15,54 +15,13 @@
 
     <!-- index CSS -->
     <link rel="stylesheet" href="/static/index.css">
-
     <script>
-        // 즐겨찾기 등록
-        function get_favorite(name, title, author, publisher, image) {
-            $.ajax({
-                type: "POST",
-                url: "/getFavorite",
-                data: {
-                    name_give: name,
-                    title_give: title,
-                    author_give: author,
-                    publisher_give: publisher,
-                    image_give: image
-                },
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.reload()
-                }
-            });
-        }
-
-        function kyobo_show() {
-            $('.kyobo_bestseller').show();
-            $('.yp_bestseller').hide();
-            $('.yes_bestseller').hide();
-            $('.aladin_bestseller').hide();
-        }
-
-        function yp_show() {
-            $('.kyobo_bestseller').hide();
-            $('.yp_bestseller').show();
-            $('.yes_bestseller').hide();
-            $('.aladin_bestseller').hide();
-        }
-
-        function yes_show() {
-            $('.kyobo_bestseller').hide();
-            $('.yp_bestseller').hide();
-            $('.yes_bestseller').show();
-            $('.aladin_bestseller').hide();
-        }
-
-        function aladin_show() {
-            $('.kyobo_bestseller').hide();
-            $('.yp_bestseller').hide();
-            $('.yes_bestseller').hide();
-            $('.aladin_bestseller').show();
-        }
+              // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
+      function logout(){
+        $.removeCookie('mytoken');
+        alert('로그아웃!')
+        window.location.href='/login'
+      }
     </script>
 </head>
 <body>
@@ -71,8 +30,8 @@
 <nav class="menu">
     <ul id="gnb">
         <!--<a href="#" class="log_in">로그인을 해주세요</a>-->
-        <!--<p>{{ user_info }}님 안녕하세요!</p>-->
-
+        <p>{{ name.username }}님 안녕하세요!</p>
+        <button onclick="logout()" class="logout">로그아웃</button>
         <li><a href="/bestseller" class="in-white">베스트셀러</a></li>
         <li><a href="/favorite" class="in-white">즐겨찾기</a></li>
         <li><a href="/review" class="in-white">리뷰</a></li>

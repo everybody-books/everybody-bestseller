@@ -26,7 +26,6 @@ a {
 }
 
 body {
-    background-color: rgba(232, 52, 78, 0.2);
     padding-left: 200px;
     /*min-height: 100vh;*/
 }
@@ -85,4 +84,8 @@ body {
     height: 200px;
     position : relative;
     padding: 40px 0;
+}
+
+.greeting {
+    color: white;
 }
