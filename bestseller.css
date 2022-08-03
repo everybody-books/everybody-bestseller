@@ -1,0 +1,15 @@
+.book-list {
+    display: flex;
+}
+
+button {
+    margin-bottom: auto;
+}
+
+.bookstore_btn {
+    display: flex;
+}
+
+.hidden {
+    display: none;
+}

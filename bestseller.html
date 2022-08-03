@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>모두의 베스트셀러</title>
+
+        <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+        <!-- index CSS -->
+    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="/static/bestseller.css">
+
+    <script>
+        // 즐겨찾기 등록
+        function get_favorite(name, title, author, publisher, image) {
+            $.ajax({
+                type: "POST",
+                url: "/getFavorite",
+                data: {
+                    name_give: name,
+                    title_give: title,
+                    author_give: author,
+                    publisher_give: publisher,
+                    image_give: image
+                },
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.reload()
+                }
+            });
+        }
+
+        function kyobo_show() {
+            $('.kyobo_bestseller').show();
+            $('.yp_bestseller').hide();
+            $('.yes_bestseller').hide();
+            $('.aladin_bestseller').hide();
+        }
+
+        function yp_show() {
+            $('.kyobo_bestseller').hide();
+            $('.yp_bestseller').show();
+            $('.yes_bestseller').hide();
+            $('.aladin_bestseller').hide();
+        }
+
+        function yes_show() {
+            $('.kyobo_bestseller').hide();
+            $('.yp_bestseller').hide();
+            $('.yes_bestseller').show();
+            $('.aladin_bestseller').hide();
+        }
+
+        function aladin_show() {
+            $('.kyobo_bestseller').hide();
+            $('.yp_bestseller').hide();
+            $('.yes_bestseller').hide();
+            $('.aladin_bestseller').show();
+        }
+    </script>
+</head>
+<body>
+
+{# 메뉴바 #}
+<nav class="menu">
+    <ul id="gnb">
+        <!--<a href="#" class="log_in">로그인을 해주세요</a>-->
+        <!--<p>{{ user_info }}님 안녕하세요!</p>-->
+
+        <li><a href="/bestseller" class="in-white">베스트셀러</a></li>
+        <li><a href="/favorite" class="in-white">즐겨찾기</a></li>
+        <li><a href="/review" class="in-white">리뷰</a></li>
+    </ul>
+</nav>
+
+{# 상단바 #}
+
+<section class="hero is-white">
+    <div class="bg">
+        <div class="hero-body has-text-centered" style="padding-bottom:1rem; margin:auto;">
+            <p class="title" style="color:white">모두의 베스트셀러</p>
+        </div>
+    </div>
+</section>
+
+
+{# 베스트셀러 목록 #}
+<div class="bookstore_btn">
+    <button onclick="kyobo_show()">교보문고</button>
+    <button onclick="yp_show()">영풍문고</button>
+    <button onclick="yes_show()">yes24</button>
+    <button onclick="aladin_show()">알라딘</button>
+</div>
+<ul class="kyobo_bestseller">
+    {% for book in kyobo_list %}
+        {% set image= book['image'] %}
+        {% set title = book['title'] %}
+        {% set author = book['author'] %}
+        {% set publisher = book['publisher'] %}
+        {% set rank = book['rank'] %}
+
+        <li class="book-list">
+            <p>{{ rank }}</p>
+            <img src="{{ image }}" alt="">
+            <div>
+                <p>{{ title }}</p>
+                <p>{{ author }}</p>
+                <p>{{ publisher }}</p>
+            </div>
+            <button onclick='get_favorite("{{ name }}", "{{ title }}", "{{ author }}", "{{ publisher }}", "{{ image }}")'>
+                즐겨찾기 등록!
+            </button>
+        </li>
+    {% endfor %}
+</ul>
+<ul class="yp_bestseller hidden">
+    {% for book in yp_list %}
+        {% set image= book['image'] %}
+        {% set title = book['title'] %}
+        {% set author = book['author'] %}
+        {% set publisher = book['publisher'] %}
+        {% set rank = book['rank'] %}
+
+        <li class="book-list">
+            <p>{{ rank }}</p>
+            <img src="{{ image }}" alt="">
+            <div>
+                <p>{{ title }}</p>
+                <p>{{ author }}</p>
+                <p>{{ publisher }}</p>
+            </div>
+            <button onclick='get_favorite("{{ name }}", "{{ title }}", "{{ author }}", "{{ publisher }}", "{{ image }}")'>
+                즐겨찾기 등록!
+            </button>
+        </li>
+    {% endfor %}
+</ul>
+<ul class="yes_bestseller hidden">
+    {% for book in yes_list %}
+        {% set image= book['image'] %}
+        {% set title = book['title'] %}
+        {% set author = book['author'] %}
+        {% set publisher = book['publisher'] %}
+        {% set rank = book['rank'] %}
+
+        <li class="book-list">
+            <p>{{ rank }}</p>
+            <img src="{{ image }}" alt="">
+            <div>
+                <p>{{ title }}</p>
+                <p>{{ author }}</p>
+                <p>{{ publisher }}</p>
+            </div>
+            <button onclick='get_favorite("{{ name }}", "{{ title }}", "{{ author }}", "{{ publisher }}", "{{ image }}")'>
+                즐겨찾기 등록!
+            </button>
+        </li>
+    {% endfor %}
+</ul>
+<ul class="aladin_bestseller hidden">
+    {% for book in aladin_list %}
+        {% set image= book['image'] %}
+        {% set title = book['title'] %}
+        {% set author = book['author'] %}
+        {% set publisher = book['publisher'] %}
+        {% set rank = book['rank'] %}
+
+        <li class="book-list">
+            <p>{{ rank }}</p>
+            <img src="{{ image }}" alt="">
+            <div>
+                <p>{{ title }}</p>
+                <p>{{ author }}</p>
+                <p>{{ publisher }}</p>
+            </div>
+            <button onclick='get_favorite("{{ name }}", "{{ title }}", "{{ author }}", "{{ publisher }}", "{{ image }}")'>
+                즐겨찾기 등록!
+            </button>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
