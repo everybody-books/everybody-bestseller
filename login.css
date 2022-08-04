@@ -1,7 +1,7 @@
 
 .log_in {
     display: block;
-    color: aqua;
+    color: white;
 }
 .section {
     padding: var(--best-size) calc(var(--best-size)*1.5);
@@ -30,6 +30,7 @@
     color: var(--gray-color);
 }
 
-.greeting {
+.greeting:hover {
     color: white;
 }
+

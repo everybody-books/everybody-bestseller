@@ -18,9 +18,9 @@
 
 .modal_content {
     background-color: white;
-    padding: 50px 100px;
     text-align: center;
     position: relative;
+    padding: 50px 100px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -37,7 +37,7 @@
 }
 
 .media {
-    width: 600px;
+    width: 800px;
     max-width: 100vw;
     margin: 20px auto auto auto;
 }
@@ -59,4 +59,24 @@
 
 .greeting {
     color: white;
+}
+
+.input-group, .form-floating {
+    width: 400px;
+    margin-bottom: 10px;
+}
+
+.btn-close {
+    top: 5%;
+    right: 5%;
+    position: absolute;
+}
+
+.review_title {
+    margin-bottom: 10px;
+}
+
+#favorite-list {
+    display: flex;
+    flex-direction: column;
 }

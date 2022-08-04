@@ -37,7 +37,7 @@ body {
     z-index:4;
     width: 200px;
     height: 100%;
-    padding-top: 200px;
+    padding-top: 100px;
     background-color: var(--brown-color);
     text-align: center;
     transition: 0.3s;
@@ -45,6 +45,7 @@ body {
 
 #gnb{
     width:100%;
+    padding: 0;
 }
 #gnb>li{
     text-align: center;
@@ -63,6 +64,7 @@ body {
 
 #gnb>li>a:hover{
    background-color: var(--point-color);
+    color: var(--brown-color);
 }
 
 .bg {
@@ -88,4 +90,9 @@ body {
 
 .greeting {
     color: white;
+    margin-bottom: 30px;
+}
+
+.logout {
+    margin-bottom: 50px;
 }

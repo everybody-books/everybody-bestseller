@@ -30,8 +30,8 @@
 <nav class="menu">
     <ul id="gnb">
         <!--<a href="#" class="log_in">로그인을 해주세요</a>-->
-        <p>{{ name.username }}님 안녕하세요!</p>
-        <button onclick="logout()" class="logout">로그아웃</button>
+        <p class="greeting">{{ name.username }}님 안녕하세요!</p>
+        <button onclick="logout()" class="button is-white logout is-small">로그아웃</button>
         <li><a href="/bestseller" class="in-white">베스트셀러</a></li>
         <li><a href="/favorite" class="in-white">즐겨찾기</a></li>
         <li><a href="/review" class="in-white">리뷰</a></li>
@@ -46,6 +46,12 @@
             <p class="title" style="color:white">모두의 베스트셀러</p>
         </div>
     </div>
+</section>
+
+<section class="desc" style="margin: 50px 20px; text-align: center">
+    <h2 style="font-size: 20px;">📚</h2>
+    <h2 style="font-size: 30px; color: black; font-weight: 800;">모두의 베스트셀러 (모베셀)</h2>
+    <h5>각종 사이트의 베스트셀러를 보여주는 한 웹사이트!</h5>
 </section>
 
 </body>
