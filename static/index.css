@@ -1,0 +1,98 @@
+:root {
+    /*Color*/
+    --brown-color:#362A09;
+    --white-color:#fff;
+    --gray-color: gray;
+    --point-color:#FFF6C6;
+    --black-color: #000;
+   /*Size*/
+    --best-size: 1rem;
+    --seller-size: 750px
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+ol,
+ul,
+li {
+    list-style: none
+}
+a {
+    color: var(--white-color);
+    text-decoration: none;
+}
+
+body {
+    padding-left: 200px;
+    /*min-height: 100vh;*/
+}
+
+.menu{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index:4;
+    width: 200px;
+    height: 100%;
+    padding-top: 100px;
+    background-color: var(--brown-color);
+    text-align: center;
+    transition: 0.3s;
+}
+
+#gnb{
+    width:100%;
+    padding: 0;
+}
+#gnb>li{
+    text-align: center;
+    width:100%;
+    padding:0;
+    margin:10px 0;
+}
+
+#gnb>li>a{
+    position:relative;
+    display: block;
+    padding: 0 30px;
+    font: 16px/30px 'inherit';
+    z-index: 10;
+}
+
+#gnb>li>a:hover{
+   background-color: var(--point-color);
+    color: var(--brown-color);
+}
+
+.bg {
+    height: 200px;
+    background-image: url('bookshop.jpg');
+    background-size: cover;
+    background-position: center;
+}
+.title {
+    font-weight: 600;
+    font-size: calc(var(--best-size) * 3);
+    display: flex;
+    justify-content: flex-start;
+    position : absolute;
+    bottom : 0;
+}
+
+.hero-body {
+    height: 200px;
+    position : relative;
+    padding: 40px 0;
+}
+
+.greeting {
+    color: white;
+    margin-bottom: 30px;
+}
+
+.logout {
+    margin-bottom: 50px;
+}

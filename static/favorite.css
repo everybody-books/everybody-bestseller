@@ -1,0 +1,86 @@
+.modal, .modals {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_overlay, .modals_overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.modal_content, .modals_content {
+    background-color: white;
+    text-align: center;
+    position: relative;
+    padding: 50px 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    msTransform: translate(-50%, -50%);
+    webkitTransform: translate(-50%, -50%);
+    border-radius: 10px;
+    width: 500px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.media {
+    width: 800px;
+    max-width: 100vw;
+    margin: 20px auto auto auto;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button is-outlined {
+    margin-right: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.greeting {
+    color: white;
+}
+
+.input-group, .form-floating {
+    width: 400px;
+    margin-bottom: 10px;
+}
+
+.btn-close {
+    top: 5%;
+    right: 5%;
+    position: absolute;
+}
+
+.review_title {
+    margin-bottom: 10px;
+}
+
+#favorite-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.delete_message {
+    margin-bottom: 20px;
+}

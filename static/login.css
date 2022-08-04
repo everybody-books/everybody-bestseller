@@ -1,0 +1,36 @@
+
+.log_in {
+    display: block;
+    color: white;
+}
+.section {
+    padding: var(--best-size) calc(var(--best-size)*1.5);
+    max-width: 750px;
+    margin: auto;
+}
+
+
+.is-sparta {
+    color: var(--brown-color);
+}
+
+.button.is-sparta {
+    background-color: var(--brown-color);
+    border-color: transparent;
+    color: var(--white-color);
+}
+
+.button.is-sparta.is-outlined {
+    background-color: transparent;
+    border-color: var(--brown-color);
+    color: var(--brown-color);
+}
+
+.help {
+    color: var(--gray-color);
+}
+
+.greeting:hover {
+    color: white;
+}
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>모두의 베스트셀러</title>
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static/index.css">
+    <script>
+              // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
+      function logout(){
+        $.removeCookie('mytoken');
+        alert('로그아웃!')
+        window.location.href='/login'
+      }
+    </script>
+</head>
+<body>
+
+{# 메뉴바 #}
+<nav class="menu">
+    <ul id="gnb">
+        <!--<a href="#" class="log_in">로그인을 해주세요</a>-->
+        <p class="greeting">{{ name.username }}님 안녕하세요!</p>
+        <button onclick="logout()" class="button is-white logout is-small">로그아웃</button>
+        <li><a href="/bestseller" class="in-white">베스트셀러</a></li>
+        <li><a href="/favorite" class="in-white">즐겨찾기</a></li>
+        <li><a href="/review" class="in-white">리뷰</a></li>
+    </ul>
+</nav>
+
+{# 상단바 #}
+
+<section class="hero is-white">
+    <div class="bg">
+        <div class="hero-body has-text-centered" style="padding-bottom:1rem; margin:auto;">
+            <p class="title" style="color:white">모두의 베스트셀러</p>
+        </div>
+    </div>
+</section>
+
+<section class="desc" style="margin: 50px 20px; text-align: center">
+    <h2 style="font-size: 20px;">📚</h2>
+    <h2 style="font-size: 30px; color: black; font-weight: 800;">모두의 베스트셀러 (모베셀)</h2>
+    <h5>각종 사이트의 베스트셀러를 보여주는 한 웹사이트!</h5>
+</section>
+
+</body>
+</html>

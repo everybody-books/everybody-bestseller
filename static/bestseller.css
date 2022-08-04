@@ -1,0 +1,52 @@
+.book-list {
+    display: flex;
+    margin-bottom: 80px;
+}
+
+button {
+    margin-bottom: auto;
+}
+
+.bookstore_btn {
+    display: flex;
+}
+
+.hidden {
+    display: none;
+}
+
+.greeting {
+    color: white;
+}
+
+.box {
+    margin: 30px;
+}
+
+.rank_box {
+    width: 40px;
+    height: 40px;
+    background-color: var(--brown-color);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rank {
+    color: white;
+    text-align: center;
+    font-size: 20px;
+}
+.bookstore_btn {
+    margin-bottom: 20px;
+}
+.bookstore_btn > button{
+    margin-right: 20px;
+}
+
+.desc {
+    font-size: 30px;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 20px;
+}
