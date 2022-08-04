@@ -1,9 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+
 import urllib
 import jwt
 import hashlib
-
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
@@ -13,18 +14,28 @@ from pymongo import MongoClient
 client = MongoClient('mongodb+srv://test:sparta@cluster0.lz7xw.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
 
+
+
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
+from selenium.webdriver.chrome.options import Options
+
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+
 
 # 교보 크롤링
 kyobo_list = []
 
 page_url = "http://www.kyobobook.co.kr/bestSellerNew/bestseller.laf"
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(chrome_options=chrome_options)
 driver.get(page_url)
 image = driver.find_elements(By.XPATH, "//img[contains(@src, 'http://image.kyobobook.co.kr/images/book/large/')]")
 title = driver.find_elements(By.XPATH, "//div[@class='title' and string-length(text()) > 0]")
@@ -40,7 +51,8 @@ driver.quit()
 yp_list = []
 
 page_url = "https://www.ypbooks.co.kr/book_arrange.yp?targetpage=book_week_best&pagetype=5&depth=1"
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(chrome_options=chrome_options)
 driver.get(page_url)
 
 image = driver.find_elements(By.XPATH, "//img[@class='thumb']")
@@ -57,7 +69,8 @@ driver.quit()
 yes_list = []
 
 page_url = "http://www.yes24.com/24/Category/BestSeller"
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(chrome_options=chrome_options)
 driver.get(page_url)
 
 image = driver.find_elements(By.XPATH, "//p[@class='image']//img")
@@ -75,7 +88,8 @@ driver.quit()
 aladin_list = []
 
 page_url = "https://www.aladin.co.kr/shop/common/wbest.aspx?BranchType=1"
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(chrome_options=chrome_options)
 driver.get(page_url)
 
 image = driver.find_elements(By.XPATH, "//img[@class='front_cover'] | //img[@class='front_cover i_cover']")
